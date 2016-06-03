@@ -1,5 +1,5 @@
 // AFUIButtonTests.h
-// Copyright (c) 2011–2015 Alamofire Software Foundation (http://alamofire.org/)
+// Copyright (c) 2011–2016 Alamofire Software Foundation ( http://alamofire.org/ )
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -58,6 +58,20 @@
     self.button = nil;
     [super tearDown];
     
+}
+
+- (void)testThatBackgroundImageChanges {
+    XCTAssertNil([self.button backgroundImageForState:UIControlStateNormal]);
+    [self.button setBackgroundImageForState:UIControlStateNormal withURL:self.jpegURL];
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(UIButton  * _Nonnull button, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [button backgroundImageForState:UIControlStateNormal] != nil;
+    }];
+    
+    [self expectationForPredicate:predicate
+              evaluatedWithObject:self.button
+                          handler:nil];
+    
+    [self waitForExpectationsWithCommonTimeoutUsingHandler:nil];
 }
 
 - (void)testThatForegroundImageCanBeCancelledAndDownloadedImmediately {
